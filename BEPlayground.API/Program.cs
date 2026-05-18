@@ -1,4 +1,5 @@
 using BEPlayground.Infrastructure.Data;
+using BEPlayground.Infrastructure.Background;
 using BEPlayground.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
@@ -16,6 +17,8 @@ builder.Services.AddMediatR(cfg =>
         Assembly.Load("BEPlayground.Application")); 
     });
 builder.Services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<AppDbContext>());
+builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+builder.Services.AddHostedService<QueuedBackgroundService>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("BEPlaygroundDemoDb"));
